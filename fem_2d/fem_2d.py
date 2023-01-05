@@ -11,8 +11,14 @@ import numpy as np
 def run_2D():
     # Define the 2D mesh and equation BC's and coefficients
     meshdir = "small_mesh"
-    Nelem, Nodes, NDir, triang, coord, DirNod, DirVal, Diff = input_data(meshdir)
-    print(Nelem, Nodes, NDir, triang, coord, DirNod, DirVal, Diff)
+    data_input = input_data(meshdir)
+    Nelem, Nodes, Nfixed, Nload, NSload, *other = data_input
+    triang, coord, fixnodes, pointload, sideload, *other = other
+    thick, young_modulus, poisson_ratio, density = other
+
+    print(Nelem, Nodes, Nfixed, Nload, NSload,\
+           triang, coord, fixnodes, pointload, sideload,\
+           thick, young_modulus, poisson_ratio, density)
 
     # Calculate element area and elemental coeffients of basis functions
     # (b,c)
@@ -20,11 +26,11 @@ def run_2D():
     print(Bloc, Cloc, Area)
 
     # build stiffness matrix (without BCs)
-    stiffMat = stiffBuild(Nelem, Nodes, triang, Bloc, Cloc, Area, Diff)
+    stiffMat = stiffBuild(Nelem, Nodes, triang, Bloc, Cloc, Area)
     print(stiffMat)
 
     # Impose BCs
-    stiffMat, rhs = imposeBC(Nodes, NDir, DirNod, DirVal, stiffMat)
+    stiffMat, rhs = imposeBC(Nodes, stiffMat)
     print(stiffMat, rhs)
 
     uh = np.linalg.solve(stiffMat, rhs.transpose())
