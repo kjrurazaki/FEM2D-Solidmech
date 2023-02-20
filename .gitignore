@@ -1,0 +1,11 @@
+FEM_results/
+FEM_results_new/
+fem_2d/fem_2d_code old.py
+__pycache__/
+.ipynb_checkpoints/
+convert_tf.py
+NN_converted.py
+NN_tf.py
+.vscode/
+Stiffness matrix analysis.ipynb
+Untitled.ipynb
